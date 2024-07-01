@@ -15,18 +15,21 @@
         <th><center>Amount</center></th>
         <th><center>Cost</center></th>
         <th><center>Cost per Unit</center></th>
+        <th></th> <!-- New column for delete button -->
       </tr>
       <tr class="product-row">
         <td>Product A</td>
         <td><center><input type="number" class="amount" placeholder="Enter amount"></center></td>
         <td><center><input type="number" class="cost" placeholder="Enter cost"></center></td>
         <td><center><span class="cost-per-unit"></span></center></td>
+        <td><center><button class="delete-btn" onclick="deleteProduct(this)">Delete</button></center></td> <!-- Delete button -->
       </tr>
       <tr class="product-row">
         <td>Product B</td>
         <td><center><input type="number" class="amount" placeholder="Enter amount"></center></td>
         <td><center><input type="number" class="cost" placeholder="Enter cost"></center></td>
         <td><center><span class="cost-per-unit"></span></center></td>
+        <td><center><button class="delete-btn" onclick="deleteProduct(this)">Delete</button></center></td> <!-- Delete button -->
       </tr>
     </table>
     <button onclick="addProduct()">Add Product</button>
@@ -47,8 +50,14 @@
         <td><center><input type="number" class="amount" placeholder="Enter amount"></center></td>
         <td><center><input type="number" class="cost" placeholder="Enter cost"></center></td>
         <td><center><span class="cost-per-unit"></span></center></td>
+        <td><center><button class="delete-btn" onclick="deleteProduct(this)">Delete</button></center></td>
       `;
       table.appendChild(row);
+    }
+
+    function deleteProduct(button) {
+      const row = button.parentNode.parentNode.parentNode;
+      row.parentNode.removeChild(row);
     }
 
     function formatCostPerUnit(cost) {
