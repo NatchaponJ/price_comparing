@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Price Comparison</title>
   <style>
     body {
@@ -11,7 +11,7 @@
       padding: 20px;
     }
     .container {
-      max-width: 600px;
+      max-width: 100%;
       margin: 0 auto;
       background: #fff;
       padding: 20px;
@@ -32,6 +32,10 @@
     }
     th {
       background-color: #f2f2f2;
+    }
+    input {
+      width: 100%;
+      box-sizing: border-box;
     }
     button {
       display: block;
@@ -102,7 +106,10 @@
   </div>
 
   <script>
-    
+    function formatCostPerUnit(cost) {
+      return Number.isInteger(cost) ? cost.toFixed(0) : cost.toFixed(9);
+    }
+
     function compareProducts() {
       const productAAmount = parseFloat(document.getElementById('productAAmount').value);
       const productAPrice = parseFloat(document.getElementById('productAPrice').value);
