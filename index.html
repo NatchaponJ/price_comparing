@@ -14,19 +14,19 @@
         <th></th>
         <th><center>Amount</center></th>
         <th><center>Cost</center></th>
-        <th><center>Cost per Unit</center></th> <!-- New column header -->
+        <th><center>Cost per Unit</center></th>
       </tr>
       <tr class="product-row">
         <td>Product A</td>
         <td><center><input type="number" class="amount" placeholder="Enter amount"></center></td>
         <td><center><input type="number" class="cost" placeholder="Enter cost"></center></td>
-        <td><center><span class="cost-per-unit"></span></center></td> <!-- Display cost per unit here -->
+        <td><center><span class="cost-per-unit"></span></center></td>
       </tr>
       <tr class="product-row">
         <td>Product B</td>
         <td><center><input type="number" class="amount" placeholder="Enter amount"></center></td>
         <td><center><input type="number" class="cost" placeholder="Enter cost"></center></td>
-        <td><center><span class="cost-per-unit"></span></center></td> <!-- Display cost per unit here -->
+        <td><center><span class="cost-per-unit"></span></center></td>
       </tr>
     </table>
     <button onclick="addProduct()">Add Product</button>
@@ -58,7 +58,7 @@
     function compareProducts() {
       const rows = document.querySelectorAll('.product-row');
       let minCPU = Infinity;
-      let cheapestProduct = '';
+      let maxCPU = -Infinity;
       let totalAmount = 0;
       let totalPrice = 0;
 
@@ -75,20 +75,22 @@
         totalAmount += amount;
         totalPrice += cost;
 
-        row.querySelector('.cost-per-unit').textContent = formatCostPerUnit(cpu); // Update cost per unit display
+        row.querySelector('.cost-per-unit').textContent = formatCostPerUnit(cpu);
 
         if (cpu < minCPU) {
           minCPU = cpu;
-          cheapestProduct = row.querySelector('td').textContent.trim();
+        }
+
+        if (cpu > maxCPU) {
+          maxCPU = cpu;
         }
       });
 
       const resultDiv = document.getElementById('result');
-      const avgCPU = totalPrice / totalAmount;
-      const percentageDifference = ((minCPU - avgCPU) / avgCPU) * 100;
+      const percentageDifference = (Math.abs(maxCPU - minCPU) / ((maxCPU + minCPU) / 2)) * 100;
 
       resultDiv.innerHTML = `
-        <p>The cheapest one is ${cheapestProduct} with ${percentageDifference.toFixed(2)}% difference</p>
+        <p>The cheapest product has a ${percentageDifference.toFixed(2)}% difference compared to the most expensive one.</p>
       `;
     }
   </script>
