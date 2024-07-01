@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Price Comparison</title>
+  <style>
+    body {
+      font-family: century-gothic, sans-serif;
+      background-color: #2d303e;
+      padding: 20px;
+    }
+    .container {
+      max-width: 600px;
+      height: 600px;
+      margin: 0 auto;
+      background: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+    table, th, td {
+      border: 1px solid #ddd;
+    }
+    th, td {
+      padding: 8px;
+      text-align: left;
+    }
+    th {
+      background-color: #f2f2f2;
+    }
+    button {
+      display: block;
+      width: 100%;
+      padding: 10px;
+      background-color: #03202F;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+    button:hover {
+      background-color: #7D9AAA;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Price Comparison</h1>
+    <table>
+      <tr>
+        <th></th>
+        <th>  <center>  Amount  </center> </th>
+        <th>  <center>  Cost  </center> </th>
+      </tr>
+      <tr>
+        <td>Product A</td>
+        <td> <center> <input type="number" id="productAAmount" placeholder="Enter amount"> </center> </td>
+        <td> <center> <input type="number" id="productAPrice" placeholder="Enter cost"> </center> </td>
+      </tr>
+      <tr>
+        <td>Product B</td>
+        <td> <center> <input type="number" id="productBAmount" placeholder="Enter amount"> </center> </td>
+        <td> <center> <input type="number" id="productBPrice" placeholder="Enter cost"> </center> </td>
+      </tr>
+    </table>
+    <br>
+    <button onclick="compareProducts()">Compare</button>
+    <br>
+    <div class="result" id="result"></div>
+  </div>
+
+  <script>
+    function formatCostPerUnit(cost) {
+      return Number.isInteger(cost) ? cost.toFixed(0) : cost.toFixed(9);
+    }
+    
+    function compareProducts() {
+      const productAAmount = parseFloat(document.getElementById('productAAmount').value);
+      const productAPrice = parseFloat(document.getElementById('productAPrice').value);
+      const productBAmount = parseFloat(document.getElementById('productBAmount').value);
+      const productBPrice = parseFloat(document.getElementById('productBPrice').value);
+
+
+      if (isNaN(productAAmount) || isNaN(productAPrice) || isNaN(productBAmount) || isNaN(productBPrice)) {
+        alert('Please enter valid numbers for all fields.');
+        return;
+      }
+
+      const productACPU = productAPrice / productAAmount;
+      const productBCPU = productBPrice / productBAmount;
+
+      let cheaperProduct;
+      let percentageDifference;
+
+      if (productACPU < productBCPU) {
+        cheaperProduct = 'Product A';
+        percentageDifference = ((productBCPU - productACPU) / productBCPU) * 100;
+      } else {
+        cheaperProduct = 'Product B';
+        percentageDifference = ((productACPU - productBCPU) / productACPU) * 100;
+      }
+
+      const resultDiv = document.getElementById('result');
+      resultDiv.innerHTML = `
+        <p>Cost per unit of Product A: ${productACPU.toFixed(2)} THB</p>
+        <p>Cost per unit of Product B: ${productBCPU.toFixed(2)} THB</p>
+        <p>The cheapest one is ${cheaperProduct} with ${percentageDifference.toFixed(2)}% difference</p>
+      `;
+    }
+  </script>
+</body>
+</html>
