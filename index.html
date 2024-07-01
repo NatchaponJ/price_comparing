@@ -84,62 +84,80 @@
 <body>
   <div class="container">
     <h1>Price Comparison</h1>
-    <table>
+    <table id="productTable">
       <tr>
         <th></th>
         <th><center>Amount</center></th>
         <th><center>Cost</center></th>
       </tr>
-      <tr>
+      <tr class="product-row">
         <td>Product A</td>
-        <td><center><input type="number" id="productAAmount" placeholder="Enter amount"></center></td>
-        <td><center><input type="number" id="productAPrice" placeholder="Enter cost"></center></td>
+        <td><center><input type="number" class="amount" placeholder="Enter amount"></center></td>
+        <td><center><input type="number" class="cost" placeholder="Enter cost"></center></td>
       </tr>
-      <tr>
+      <tr class="product-row">
         <td>Product B</td>
-        <td><center><input type="number" id="productBAmount" placeholder="Enter amount"></center></td>
-        <td><center><input type="number" id="productBPrice" placeholder="Enter cost"></center></td>
+        <td><center><input type="number" class="amount" placeholder="Enter amount"></center></td>
+        <td><center><input type="number" class="cost" placeholder="Enter cost"></center></td>
       </tr>
     </table>
+    <button onclick="addProduct()">Add Product</button>
     <button onclick="compareProducts()">Compare</button>
     <div class="result" id="result"></div>
   </div>
 
   <script>
+    let productCount = 2;
+
+    function addProduct() {
+      productCount++;
+      const table = document.getElementById('productTable');
+      const row = document.createElement('tr');
+      row.className = 'product-row';
+      row.innerHTML = `
+        <td>Product ${String.fromCharCode(64 + productCount)}</td>
+        <td><center><input type="number" class="amount" placeholder="Enter amount"></center></td>
+        <td><center><input type="number" class="cost" placeholder="Enter cost"></center></td>
+      `;
+      table.appendChild(row);
+    }
+
     function formatCostPerUnit(cost) {
       return Number.isInteger(cost) ? cost.toFixed(0) : cost.toFixed(9);
     }
 
     function compareProducts() {
-      const productAAmount = parseFloat(document.getElementById('productAAmount').value);
-      const productAPrice = parseFloat(document.getElementById('productAPrice').value);
-      const productBAmount = parseFloat(document.getElementById('productBAmount').value);
-      const productBPrice = parseFloat(document.getElementById('productBPrice').value);
+      const rows = document.querySelectorAll('.product-row');
+      let minCPU = Infinity;
+      let cheapestProduct = '';
+      let totalAmount = 0;
+      let totalPrice = 0;
 
-      if (isNaN(productAAmount) || isNaN(productAPrice) || isNaN(productBAmount) || isNaN(productBPrice)) {
-        alert('Please enter valid numbers for all fields.');
-        return;
-      }
+      rows.forEach(row => {
+        const amount = parseFloat(row.querySelector('.amount').value);
+        const cost = parseFloat(row.querySelector('.cost').value);
 
-      const productACPU = productAPrice / productAAmount;
-      const productBCPU = productBPrice / productBAmount;
+        if (isNaN(amount) || isNaN(cost)) {
+          alert('Please enter valid numbers for all fields.');
+          return;
+        }
 
-      let cheaperProduct;
-      let percentageDifference;
+        const cpu = cost / amount;
+        totalAmount += amount;
+        totalPrice += cost;
 
-      if (productACPU < productBCPU) {
-        cheaperProduct = 'Product A';
-        percentageDifference = ((productBCPU - productACPU) / productBCPU) * 100;
-      } else {
-        cheaperProduct = 'Product B';
-        percentageDifference = ((productACPU - productBCPU) / productACPU) * 100;
-      }
+        if (cpu < minCPU) {
+          minCPU = cpu;
+          cheapestProduct = row.querySelector('td').textContent.trim();
+        }
+      });
 
       const resultDiv = document.getElementById('result');
+      const avgCPU = totalPrice / totalAmount;
+      const percentageDifference = ((minCPU - avgCPU) / avgCPU) * 100;
+
       resultDiv.innerHTML = `
-        <p>Cost per unit of Product A: ${productACPU.toFixed(2)} THB</p>
-        <p>Cost per unit of Product B: ${productBCPU.toFixed(2)} THB</p>
-        <p>The cheapest one is ${cheaperProduct} with ${percentageDifference.toFixed(2)}% difference</p>
+        <p>The cheapest one is ${cheapestProduct} with ${percentageDifference.toFixed(2)}% difference</p>
       `;
     }
   </script>
