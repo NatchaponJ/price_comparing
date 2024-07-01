@@ -4,82 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Price Comparison</title>
-  <style>
-    body {
-      font-family: century-gothic, sans-serif;
-      background-color: #2d303e;
-      padding: 20px;
-    }
-    .container {
-      max-width: 100%;
-      margin: 0 auto;
-      background: #fff;
-      padding: 20px;
-      border-radius: 8px;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 20px;
-    }
-    table, th, td {
-      border: 1px solid #ddd;
-    }
-    th, td {
-      padding: 8px;
-      text-align: left;
-    }
-    th {
-      background-color: #f2f2f2;
-    }
-    input {
-      width: 100%;
-      box-sizing: border-box;
-    }
-    button {
-      display: block;
-      width: 100%;
-      padding: 10px;
-      background-color: #03202F;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      font-size: 16px;
-      margin-top: 20px;
-    }
-    button:hover {
-      background-color: #7D9AAA;
-    }
-    @media (max-width: 600px) {
-      .container {
-        padding: 10px;
-      }
-      table, th, td {
-        font-size: 14px;
-      }
-      th, td {
-        padding: 6px;
-      }
-      button {
-        padding: 8px;
-        font-size: 14px;
-      }
-    }
-    @media (max-width: 400px) {
-      table, th, td {
-        font-size: 12px;
-      }
-      th, td {
-        padding: 4px;
-      }
-      button {
-        padding: 6px;
-        font-size: 12px;
-      }
-    }
-  </style>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <div class="container">
@@ -89,16 +14,19 @@
         <th></th>
         <th><center>Amount</center></th>
         <th><center>Cost</center></th>
+        <th><center>Cost per Unit</center></th> <!-- New column header -->
       </tr>
       <tr class="product-row">
         <td>Product A</td>
         <td><center><input type="number" class="amount" placeholder="Enter amount"></center></td>
         <td><center><input type="number" class="cost" placeholder="Enter cost"></center></td>
+        <td><center><span class="cost-per-unit"></span></center></td> <!-- Display cost per unit here -->
       </tr>
       <tr class="product-row">
         <td>Product B</td>
         <td><center><input type="number" class="amount" placeholder="Enter amount"></center></td>
         <td><center><input type="number" class="cost" placeholder="Enter cost"></center></td>
+        <td><center><span class="cost-per-unit"></span></center></td> <!-- Display cost per unit here -->
       </tr>
     </table>
     <button onclick="addProduct()">Add Product</button>
@@ -118,6 +46,7 @@
         <td>Product ${String.fromCharCode(64 + productCount)}</td>
         <td><center><input type="number" class="amount" placeholder="Enter amount"></center></td>
         <td><center><input type="number" class="cost" placeholder="Enter cost"></center></td>
+        <td><center><span class="cost-per-unit"></span></center></td>
       `;
       table.appendChild(row);
     }
@@ -145,6 +74,8 @@
         const cpu = cost / amount;
         totalAmount += amount;
         totalPrice += cost;
+
+        row.querySelector('.cost-per-unit').textContent = formatCostPerUnit(cpu); // Update cost per unit display
 
         if (cpu < minCPU) {
           minCPU = cpu;
