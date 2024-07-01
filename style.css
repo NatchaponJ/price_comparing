@@ -45,6 +45,18 @@ body {
   button:hover {
     background-color: #7D9AAA;
   }
+  .delete-btn {
+    background-color: #FF6347;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    padding: 5px 10px;
+    font-size: 14px;
+  }
+  .delete-btn:hover {
+    background-color: #FF4500;
+  }
   @media (max-width: 600px) {
     .container {
       padding: 10px;
