@@ -12,7 +12,6 @@
     }
     .container {
       max-width: 600px;
-      height: 600px;
       margin: 0 auto;
       background: #fff;
       padding: 20px;
@@ -44,9 +43,37 @@
       border-radius: 5px;
       cursor: pointer;
       font-size: 16px;
+      margin-top: 20px;
     }
     button:hover {
       background-color: #7D9AAA;
+    }
+    @media (max-width: 600px) {
+      .container {
+        padding: 10px;
+      }
+      table, th, td {
+        font-size: 14px;
+      }
+      th, td {
+        padding: 6px;
+      }
+      button {
+        padding: 8px;
+        font-size: 14px;
+      }
+    }
+    @media (max-width: 400px) {
+      table, th, td {
+        font-size: 12px;
+      }
+      th, td {
+        padding: 4px;
+      }
+      button {
+        padding: 6px;
+        font-size: 12px;
+      }
     }
   </style>
 </head>
@@ -56,23 +83,21 @@
     <table>
       <tr>
         <th></th>
-        <th>  <center>  Amount  </center> </th>
-        <th>  <center>  Cost  </center> </th>
+        <th><center>Amount</center></th>
+        <th><center>Cost</center></th>
       </tr>
       <tr>
         <td>Product A</td>
-        <td> <center> <input type="number" id="productAAmount" placeholder="Enter amount"> </center> </td>
-        <td> <center> <input type="number" id="productAPrice" placeholder="Enter cost"> </center> </td>
+        <td><center><input type="number" id="productAAmount" placeholder="Enter amount"></center></td>
+        <td><center><input type="number" id="productAPrice" placeholder="Enter cost"></center></td>
       </tr>
       <tr>
         <td>Product B</td>
-        <td> <center> <input type="number" id="productBAmount" placeholder="Enter amount"> </center> </td>
-        <td> <center> <input type="number" id="productBPrice" placeholder="Enter cost"> </center> </td>
+        <td><center><input type="number" id="productBAmount" placeholder="Enter amount"></center></td>
+        <td><center><input type="number" id="productBPrice" placeholder="Enter cost"></center></td>
       </tr>
     </table>
-    <br>
     <button onclick="compareProducts()">Compare</button>
-    <br>
     <div class="result" id="result"></div>
   </div>
 
@@ -80,13 +105,12 @@
     function formatCostPerUnit(cost) {
       return Number.isInteger(cost) ? cost.toFixed(0) : cost.toFixed(9);
     }
-    
+
     function compareProducts() {
       const productAAmount = parseFloat(document.getElementById('productAAmount').value);
       const productAPrice = parseFloat(document.getElementById('productAPrice').value);
       const productBAmount = parseFloat(document.getElementById('productBAmount').value);
       const productBPrice = parseFloat(document.getElementById('productBPrice').value);
-
 
       if (isNaN(productAAmount) || isNaN(productAPrice) || isNaN(productBAmount) || isNaN(productBPrice)) {
         alert('Please enter valid numbers for all fields.');
