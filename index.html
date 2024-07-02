@@ -7,30 +7,34 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div class="container">
+  <div class="container" id="container">
     <h1>Price Comparison</h1>
     <table id="productTable">
-      <tr>
-        <th></th>
-        <th><center>Amount</center></th>
-        <th><center>Cost</center></th>
-        <th><center>Cost per Unit</center></th>
-        <th></th> <!-- New column for delete button -->
-      </tr>
-      <tr class="product-row">
-        <td>Product A</td>
-        <td><center><input type="number" class="amount" placeholder="Enter amount"></center></td>
-        <td><center><input type="number" class="cost" placeholder="Enter cost"></center></td>
-        <td><center><span class="cost-per-unit"></span></center></td>
-        <td><center><button class="delete-btn" onclick="deleteProduct(this)">Delete</button></center></td> <!-- Delete button -->
-      </tr>
-      <tr class="product-row">
-        <td>Product B</td>
-        <td><center><input type="number" class="amount" placeholder="Enter amount"></center></td>
-        <td><center><input type="number" class="cost" placeholder="Enter cost"></center></td>
-        <td><center><span class="cost-per-unit"></span></center></td>
-        <td><center><button class="delete-btn" onclick="deleteProduct(this)">Delete</button></center></td> <!-- Delete button -->
-      </tr>
+      <thead>
+        <tr>
+          <th>Product</th>
+          <th><center>Amount</center></th>
+          <th><center>Cost</center></th>
+          <th><center>Cost per Unit</center></th>
+          <th></th> <!-- New column for delete button -->
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="product-row">
+          <td>Product A</td>
+          <td><center><input type="number" class="amount" placeholder="Enter amount"></center></td>
+          <td><center><input type="number" class="cost" placeholder="Enter cost"></center></td>
+          <td><center><span class="cost-per-unit"></span></center></td>
+          <td><center><button class="delete-btn" onclick="deleteProduct(this)">Delete</button></center></td> <!-- Delete button -->
+        </tr>
+        <tr class="product-row">
+          <td>Product B</td>
+          <td><center><input type="number" class="amount" placeholder="Enter amount"></center></td>
+          <td><center><input type="number" class="cost" placeholder="Enter cost"></center></td>
+          <td><center><span class="cost-per-unit"></span></center></td>
+          <td><center><button class="delete-btn" onclick="deleteProduct(this)">Delete</button></center></td> <!-- Delete button -->
+        </tr>
+      </tbody>
     </table>
     <button onclick="addProduct()">Add Product</button>
     <button onclick="compareProducts()">Compare</button>
@@ -38,11 +42,17 @@
   </div>
 
   <script>
-    let productCount = 2;
+    let productCount = 2;  // Initial product count set to 2 for the existing products
+
+    function countProductRows() {
+      const container = document.getElementById('container');
+      const productRows = container.querySelectorAll('tr.product-row');
+      return productRows.length;
+    }
 
     function addProduct() {
       productCount++;
-      const table = document.getElementById('productTable');
+      const table = document.getElementById('productTable').getElementsByTagName('tbody')[0];
       const row = document.createElement('tr');
       row.className = 'product-row';
       row.innerHTML = `
@@ -56,8 +66,17 @@
     }
 
     function deleteProduct(button) {
-      const row = button.parentNode.parentNode.parentNode;
-      row.parentNode.removeChild(row);
+      const row = button.closest('tr');
+      row.remove();
+      updateProductCount();
+    }
+
+    function updateProductCount() {
+      const rows = document.querySelectorAll('#productTable .product-row');
+      productCount = rows.length;
+      rows.forEach((row, index) => {
+        row.cells[0].innerText = `Product ${String.fromCharCode(65 + index)}`;
+      });
     }
 
     function formatCostPerUnit(cost) {
